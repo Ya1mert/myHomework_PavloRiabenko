@@ -1,11 +1,9 @@
-var ansi = require('ansi');
+var ansi = require('ansi'),
+    prompt = require('prompt-console');
     require('consoleplusplus');
-var prompt = require('prompt-console'),
-    keypress = require('keypress');
-var cursor = ansi(process.stdout);
 
-var colors = ['#red','#cyan','#teal','#green','#blue','#lime','#yellow','#silver'];
-
+var cursor = ansi(process.stdout),
+    colors = ['#red','#cyan','#teal','#green','#blue','#lime','#yellow','#silver'];
 
 prompt.ask(
     [{
@@ -20,33 +18,22 @@ prompt.ask(
                     return true;
                 default:
                     console.log('wrong input!')
-
-            }
-            //keypress(process.stdin);
-            //process.stdin.on('keypress',function(ch,key){
-            //    if (key && (key.name==='n')){
-            //        console.log('You have choosen boring world :( ' + key.name);
-            //        process.exit();
-            //    }
-            //    else if (key && (key.name==='y')){return true}
-            //    else return false;
-            //});
-        },
+                }},
         color: 'green',
         name: 'name'
     },{
         question: 'Please enter your awesome word! Warning! maximum 8 chars long',
-        validator: /\b\w{1,8}\b/,
+        validator: /\b\w{1,8}\b/,      // фильтруем по словам до 8 символов включительно с помошью regexp
         color: 'blue',
         name: 'ex'
 
     }], function(response){
         var x = response.ex;
         var result='';
-        var sound = cursor.beep();
+        var sound = cursor.beep;
         for (i=0 ; i< x.length ; i++){
             result+=(colors[i]+'{'+x.charAt(i)+'}');
-        } console.info(result);setTimeout(sound,1000);
+        } console.info(result);setTimeout(sound(),1000);
         }
 
     );

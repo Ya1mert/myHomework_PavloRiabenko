@@ -30,10 +30,10 @@ prompt.ask(
     }], function(response){
         var x = response.ex;
         var result='';
-        var sound = cursor.beep;
-        for (i=0 ; i< x.length ; i++){
+        //var sound = cursor.beep;
+        for (var i=0 ; i< x.length ; i++){
             result+=(colors[i]+'{'+x.charAt(i)+'}');
-        } console.info(result);setTimeout(sound(),1000);
+        } console.info(result);cursor.beep();
         }
 
     );

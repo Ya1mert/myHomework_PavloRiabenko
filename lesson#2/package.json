@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "minimist": "^1.2.0",
     "prompt-console": "^1.0.11",
     "sugar": "^1.4.1"
   }

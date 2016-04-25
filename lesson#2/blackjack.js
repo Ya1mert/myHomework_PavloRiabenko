@@ -207,23 +207,10 @@ function Admin(name) {
 }
 // Наследуем общие свойства и методы
 User.prototype = Object.create(Player.prototype);
-Admin.prototype = Object.create(Player.prototype);
 User.prototype.constructor = Player;
-Admin.prototype.constructor = Player;
 // Особености потомков
 
 
-// Прописываем особености метода старт диллера
-Admin.prototype.start = function () {
-    var b;
-    b = deck.sample();
-    this.sum += b.cost;
-    this.hand.push(b);
-    deck = deck.exclude(b);
-    console.log('У диллера : ', b.name);
-    console.log('сумма карт диллера = ', this.sum)
-
-};
 // функция повторной игры
 function playAgain() {
     console.log('-------------------------------------------------------------------');
@@ -300,7 +287,7 @@ function game(answer) {
         deck = newDeck
     }
     player = new User(answer);
-    diller = new Admin('Диллер');
+    diller = new User('Диллер');
     player.start();
     diller.cardpick();
     finish();
@@ -311,7 +298,7 @@ function blackjack() {
     rl.question('Вы хотите вывести статистику по игре? y(yes)/n(no) ',function (answer){
         switch (answer){
             case 'y':
-                console.log('Эта опция пок ане работает. Простите(')ж
+                console.log('Эта опция пок ане работает. Простите(');
                 blackjack();
                 //fs.readFile('score.txt',function(err,data){
                 //    if (err)throw err;
@@ -330,7 +317,9 @@ function blackjack() {
                             console.log('Перебор: Если сумма Ваших карт превысит 21, Вы "Перебрали". В этом случае Вы проигрываете Вашу ставку.');
                             console.log('Ничья: Если сумма значений Ваших карт равна сумме значений карт дилера, то объявляется ничья,\n и Вы получаете Вашу ставку обратно. Помните, что комбинация Блэк Джек всегда побеждает сумму карт 21, набранную более чем из двух карт.');
                             rl.question('Ну что теперь ты готов сыграть? y(yes)/n(no) ', function (answer) {
-                                return (answer == 'y') ? game() : process.exit();
+                                return (answer == 'y') ? function(){rl.question('Как Вас зовут? ', function (answer) {
+                                    return game(answer);
+                                });} : process.exit();
                             });
                             break;
                         case 'y':

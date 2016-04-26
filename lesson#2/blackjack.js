@@ -178,10 +178,10 @@ function Player(name) {
 Player.prototype.start = function () {
     var a;
     for (var i = 0; i < 2; i++) {
-        a = deck.sample();    // локальная переменная
-        this.sum += a.cost;
-        this.hand.push(a);
-        deck = deck.exclude(a);
+        a = deck.sample();    // локальная переменная присваеваем случайный элемент-обьект из массива карт
+        this.sum += a.cost;   // добавляем к общей стоимости карт в руке стоимость выбраного обьекта
+        this.hand.push(a);    // добавляем в массив "рука" карту из общей колоды
+        deck = deck.exclude(a);  // убираем добавленую карту из общей колоды
         console.log(this.name + ', вы получили : ', a.name);
     }
     console.log(this.name + ', сумма ваших карт = ', this.sum);
@@ -202,9 +202,7 @@ Player.prototype.cardpick = function () {
 function User(name) {
     Player.apply(this, arguments);
 }
-function Admin(name) {
-    Player.apply(this, arguments);
-}
+
 // Наследуем общие свойства и методы
 User.prototype = Object.create(Player.prototype);
 User.prototype.constructor = Player;
@@ -258,25 +256,29 @@ function finish() {
     }
     console.log('-------------------------------------------------------------------');
     rl.question('Диллер спрашивает Вас, будете брать еще карту? y(yes)/n(no) ', function (answer) {
-        if (answer === 'y') {
-            player.cardpick();
-            if (player.sum > 21) {
-                console.log('К сожалению вы проиграли! Вы набрали больше 21! ', player.sum);
-                playAgain();
-            }
-            else finish()
-        }
-        if (answer === 'n') {
-            if (diller.sum < 17) {
-                console.log('-------------------------------------------------------------------');
-                console.log('Диллер берет карты пока сумма его карт не будет больше или равна 17');
-                do {
-                    diller.cardpick();
-                    console.log(diller.sum)
-                } while (diller.sum < 17);
-
-            }
-            checkScore();
+        switch (anaswer){
+            case 'y':
+                player.cardpick();
+                if (player.sum > 21) {
+                    console.log('К сожалению вы проиграли! Вы набрали больше 21! ', player.sum);
+                    playAgain();
+                }
+                else finish();
+                break;
+            case 'n':
+                if (diller.sum < 17) {
+                    console.log('-------------------------------------------------------------------');
+                    console.log('Диллер берет карты пока сумма его карт не будет больше или равна 17');
+                    do {
+                        diller.cardpick();
+                        console.log(diller.sum)
+                    } while (diller.sum < 17);
+                }
+                checkScore();
+                break;
+            default:
+                console.log('К сожалению я вас не понял. Используйте только  y(yes)/n(no) ');
+                finish();
         }
     })
 }
